@@ -1,0 +1,27 @@
+#!/bin/bash
+
+echo "🎨 DynastyIN Portfolio Setup"
+echo "================================"
+echo ""
+
+# Check if we're in the right directory
+if [ ! -f "index.html" ]; then
+    echo "❌ Error: index.html not found"
+    echo "Please run this script from the dynastyin-portfolio directory"
+    exit 1
+fi
+
+# Create directories
+echo "📁 Creating directories..."
+mkdir -p libs
+mkdir -p assets
+
+echo ""
+echo "✨ Setup Complete!"
+echo ""
+echo "Next steps:"
+echo "1. Open index.html in your browser"
+echo "2. Use Ctrl+Shift+Alt+Z to reveal admin access"
+echo "3. Enter passphrase: DynastyIN2000"
+echo ""
+echo "Happy painting! 🎨"

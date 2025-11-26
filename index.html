@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DynastyIN - Premium Contemporary Art Portfolio">
+    <meta name="theme-color" content="#000000">
+    <title>DynastyIN | Premium Art Portfolio</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎨</text></svg>">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="theme-dark">
+    <!-- Custom Cursor -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+    
+    <!-- Animated Background -->
+    <div class="background-mesh"></div>
+    
+    <!-- Premium Header -->
+    <header class="header">
+        <div class="container header-content">
+            <h1 class="logo">DYNASTYIN</h1>
+            <nav class="header-nav">
+                <button id="themeToggle" class="magnetic-btn" aria-label="Toggle theme">
+                    <svg class="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                    </svg>
+                    <svg class="theme-icon moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                </button>
+                <button id="adminToggle" class="magnetic-btn admin-hidden" aria-label="Admin access" style="display: none;">
+                    <svg class="admin-icon locked" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                    <svg class="admin-icon unlocked" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/>
+                    </svg>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Cinematic Hero -->
+    <section class="hero">
+        <!-- Background Slideshow -->
+        <div class="hero-background">
+            <div class="slideshow" id="backgroundSlideshow">
+                <!-- Slides will be injected here dynamically -->
+            </div>
+            <div class="slideshow-overlay"></div>
+        </div>
+        
+        <div class="container hero-content">
+            <div class="hero-text-content">
+                <h1 class="hero-title">
+                    <span class="title-line">DYNASTY</span>
+                    <span class="text-gradient title-line">IN</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Where contemporary art meets digital excellence. 
+                    A curated collection of visionary paintings that transcend boundaries.
+                </p>
+            </div>
+            <div class="scroll-indicator">
+                <div class="scroll-line"></div>
+                <div class="scroll-text">Scroll to Explore</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admin Panel -->
+    <div id="adminPanel" class="admin-panel hidden">
+        <div class="container">
+            <div class="admin-panel-content">
+                <div class="admin-header">
+                    <h3 class="admin-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="admin-status-icon">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/>
+                        </svg>
+                        Admin Mode Active
+                    </h3>
+                    <div class="admin-actions">
+                        <button id="addPaintingBtn" class="btn btn-primary">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            Add Painting
+                        </button>
+                        <button id="exportBtn" class="btn btn-secondary">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            Export
+                        </button>
+                        <button id="importBtn" class="btn btn-success">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                            Import
+                        </button>
+                        <input type="file" id="importFile" accept=".json" class="hidden">
+                    </div>
+                </div>
+                
+                <!-- Theme Management -->
+                <div class="admin-section">
+                    <h4 class="admin-subtitle">Theme Management</h4>
+                    <div class="theme-selector">
+                        <label for="themeSelect" class="label">Select Theme:</label>
+                        <select id="themeSelect" class="input">
+                            <option value="dark">Dark (Default)</option>
+                            <option value="light">Light</option>
+                            <option value="serene">Serene Blue</option>
+                            <option value="earth">Earth Tones</option>
+                            <option value="vibrant">Vibrant Energy</option>
+                            <option value="monochrome">Monochrome</option>
+                            <option value="sunset">Sunset</option>
+                        </select>
+                        <button id="applyThemeBtn" class="btn btn-primary">Apply Theme</button>
+                    </div>
+                </div>
+                
+                <!-- Background Slideshow Management -->
+                <div class="admin-section">
+                    <h4 class="admin-subtitle">Background Slideshow</h4>
+                    <div class="admin-actions">
+                        <button id="addBackgroundBtn" class="btn btn-primary">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                            Add Background Image
+                        </button>
+                    </div>
+                    <div id="backgroundsList" class="backgrounds-list">
+                        <!-- Background images will be listed here -->
+                    </div>
+                </div>
+
+                <!-- Website Content Management -->
+                <div class="admin-section">
+                    <h4 class="admin-subtitle">Website Content</h4>
+                    <div class="admin-actions">
+                        <button id="manageAboutBtn" class="btn btn-primary">Edit About Section</button>
+                        <button id="manageContactBtn" class="btn btn-primary">Edit Contact Section</button>
+                        <button id="manageDisclaimerBtn" class="btn btn-primary">Edit Disclaimer</button>
+                        <button id="manageBlogBtn" class="btn btn-primary">Manage Blog Posts</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gallery Section -->
+    <section class="gallery-section">
+        <div class="container">
+            <h2 class="section-title">Featured Works</h2>
+            <div id="galleryGrid" class="gallery-grid">
+                <!-- Gallery items will be injected here -->
+            </div>
+            <div id="emptyState" class="empty-state hidden">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="empty-icon">
+                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/>
+                </svg>
+                <p>No paintings yet. Add your first masterpiece!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog Section -->
+    <section class="blog-section" id="blogSection">
+        <div class="container">
+            <h2 class="section-title">Latest from the Studio</h2>
+            <div id="blogPosts" class="blog-posts">
+                <!-- Blog posts will be injected here -->
+            </div>
+            <div id="emptyBlogState" class="empty-state hidden">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="empty-icon">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+                </svg>
+                <p>No blog posts yet. Check back soon!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about-section" id="aboutSection">
+        <div class="container">
+            <h2 class="section-title">About DynastyIN</h2>
+            <div id="aboutContent" class="content-section">
+                <!-- About content will be injected here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contactSection">
+        <div class="container">
+            <h2 class="section-title">Get In Touch</h2>
+            <div id="contactContent" class="content-section">
+                <!-- Contact content will be injected here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <h3 class="footer-title">DynastyIN</h3>
+                <p class="footer-tagline">Contemporary Art Portfolio</p>
+            </div>
+            <div class="footer-links">
+                <a href="#aboutSection">About</a>
+                <a href="#blogSection">Blog</a>
+                <a href="#contactSection">Contact</a>
+                <a href="#" id="disclaimerLink">Disclaimer</a>
+            </div>
+            <div class="footer-social">
+                <a href="mailto:art@dynastyin.com" class="social-link" aria-label="Email">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                </a>
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-link" aria-label="Instagram">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+                </a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 DynastyIN. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Admin Prompt Modal -->
+    <div id="adminPrompt" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-small">
+            <h3 class="modal-title">Admin Access</h3>
+            <p class="text-muted">Enter your secure passphrase</p>
+            <input type="password" id="passphraseInput" class="input" placeholder="Enter passphrase" autocomplete="off">
+            <div class="modal-actions">
+                <button id="unlockBtn" class="btn btn-primary btn-block">Unlock</button>
+                <button id="cancelAdminBtn" class="btn btn-secondary btn-block">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Painting Modal -->
+    <div id="paintingModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Add Painting</h3>
+                <button class="icon-btn close-modal" id="closePaintingModal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <form id="paintingForm" class="painting-form">
+                <div class="form-section">
+                    <label class="dropzone" id="imageDropzone">
+                        <input type="file" id="imageInput" accept="image/*" class="hidden">
+                        <div id="dropzoneContent" class="dropzone-content">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="dropzone-icon">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+                            </svg>
+                            <p class="dropzone-text">Drop image here or click to upload</p>
+                            <p class="dropzone-hint">Supports JPG, PNG, WebP</p>
+                        </div>
+                        <div id="imagePreview" class="image-preview hidden">
+                            <img id="previewImg" src="" alt="Preview">
+                            <button type="button" class="btn btn-small btn-danger" id="removeImageBtn">Remove Image</button>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="titleInput" class="label">Title <span class="required">*</span></label>
+                        <input type="text" id="titleInput" class="input" placeholder="Sunset Dreams" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="yearInput" class="label">Year</label>
+                        <input type="number" id="yearInput" class="input" placeholder="2024" min="1900" max="2100">
+                    </div>
+                    <div class="form-group">
+                        <label for="mediumInput" class="label">Medium</label>
+                        <input type="text" id="mediumInput" class="input" placeholder="Oil on Canvas">
+                    </div>
+                    <div class="form-group">
+                        <label for="sizeInput" class="label">Dimensions</label>
+                        <input type="text" id="sizeInput" class="input" placeholder='24" × 36"'>
+                    </div>
+                    <div class="form-group">
+                        <label for="categoryInput" class="label">Category</label>
+                        <select id="categoryInput" class="input">
+                            <option value="">Select category</option>
+                            <option value="Abstract">Abstract</option>
+                            <option value="Landscapes">Landscapes</option>
+                            <option value="Portrait">Portrait</option>
+                            <option value="Urban">Urban</option>
+                            <option value="Still Life">Still Life</option>
+                            <option value="Contemporary">Contemporary</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="visibilityInput" class="label">Visibility</label>
+                        <select id="visibilityInput" class="input">
+                            <option value="public">Public</option>
+                            <option value="private">Private</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="descriptionInput" class="label">Description</label>
+                    <textarea id="descriptionInput" class="input textarea" rows="3" placeholder="A vibrant exploration of color and light..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="tagsInput" class="label">Tags</label>
+                    <input type="text" id="tagsInput" class="input" placeholder="landscape, oil, contemporary (comma separated)">
+                </div>
+
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary btn-large">Save Painting</button>
+                    <button type="button" class="btn btn-secondary btn-large" id="cancelPaintingBtn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add Background Image Modal -->
+    <div id="backgroundModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 class="modal-title">Add Background Image</h3>
+                <button class="icon-btn close-modal" id="closeBackgroundModal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <form id="backgroundForm" class="painting-form">
+                <div class="form-section">
+                    <label class="dropzone" id="backgroundDropzone">
+                        <input type="file" id="backgroundImageInput" accept="image/*" class="hidden">
+                        <div id="backgroundDropzoneContent" class="dropzone-content">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" class="dropzone-icon">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+                            </svg>
+                            <p class="dropzone-text">Drop background image here or click to upload</p>
+                            <p class="dropzone-hint">Supports JPG, PNG, WebP (Recommended: 1920x1080 or larger)</p>
+                        </div>
+                        <div id="backgroundImagePreview" class="image-preview hidden">
+                            <img id="backgroundPreviewImg" src="" alt="Preview">
+                            <button type="button" class="btn btn-small btn-danger" id="removeBackgroundImageBtn">Remove Image</button>
+                        </div>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label for="backgroundNameInput" class="label">Image Name</label>
+                    <input type="text" id="backgroundNameInput" class="input" placeholder="Sunset Background">
+                </div>
+
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary btn-large">Save Background Image</button>
+                    <button type="button" class="btn btn-secondary btn-large" id="cancelBackgroundBtn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Blog Post Modal -->
+    <div id="blogPostModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 class="modal-title" id="blogModalTitle">Add Blog Post</h3>
+                <button class="icon-btn close-modal" id="closeBlogModal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <form id="blogPostForm" class="painting-form">
+                <div class="form-group">
+                    <label for="blogTitleInput" class="label">Title <span class="required">*</span></label>
+                    <input type="text" id="blogTitleInput" class="input" placeholder="Enter blog post title" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="blogContentInput" class="label">Content <span class="required">*</span></label>
+                    <textarea id="blogContentInput" class="input textarea" rows="10" placeholder="Write your blog post content here..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="blogExcerptInput" class="label">Excerpt</label>
+                    <textarea id="blogExcerptInput" class="input textarea" rows="3" placeholder="Brief excerpt for preview..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="blogStatusInput" class="label">Status</label>
+                    <select id="blogStatusInput" class="input">
+                        <option value="published">Published</option>
+                        <option value="draft">Draft</option>
+                    </select>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary btn-large">Save Blog Post</button>
+                    <button type="button" class="btn btn-secondary btn-large" id="cancelBlogBtn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Content Management Modals -->
+    <div id="aboutContentModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit About Section</h3>
+                <button class="icon-btn close-modal" id="closeAboutContentModal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <form id="aboutContentForm" class="painting-form">
+                <div class="form-group">
+                    <label for="aboutContentInput" class="label">About Content <span class="required">*</span></label>
+                    <textarea id="aboutContentInput" class="input textarea" rows="15" placeholder="Write about your art and philosophy..."></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary btn-large">Save About Content</button>
+                    <button type="button" class="btn btn-secondary btn-large" id="cancelAboutContentBtn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="contactContentModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Contact Section</h3>
+                <button class="icon-btn close-modal" id="closeContactContentModal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <form id="contactContentForm" class="painting-form">
+                <div class="form-group">
+                    <label for="contactContentInput" class="label">Contact Content <span class="required">*</span></label>
+                    <textarea id="contactContentInput" class="input textarea" rows="10" placeholder="Enter your contact information and details..."></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary btn-large">Save Contact Content</button>
+                    <button type="button" class="btn btn-secondary btn-large" id="cancelContactContentBtn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="disclaimerContentModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 class="modal-title">Edit Disclaimer</h3>
+                <button class="icon-btn close-modal" id="closeDisclaimerContentModal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <form id="disclaimerContentForm" class="painting-form">
+                <div class="form-group">
+                    <label for="disclaimerContentInput" class="label">Disclaimer Content <span class="required">*</span></label>
+                    <textarea id="disclaimerContentInput" class="input textarea" rows="10" placeholder="Enter your disclaimer text..."></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary btn-large">Save Disclaimer</button>
+                    <button type="button" class="btn btn-secondary btn-large" id="cancelDisclaimerContentBtn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Blog Posts Management Modal -->
+    <div id="blogPostsModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content modal-large">
+            <div class="modal-header">
+                <h3 class="modal-title">Manage Blog Posts</h3>
+                <button class="icon-btn close-modal" id="closeBlogPostsModal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="admin-actions">
+                    <button id="addBlogPostBtn" class="btn btn-primary">Add New Blog Post</button>
+                </div>
+                <div id="blogPostsList" class="blog-posts-list">
+                    <!-- Blog posts will be listed here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Disclaimer Modal -->
+    <div id="disclaimerModal" class="modal hidden">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Disclaimer</h3>
+                <button class="icon-btn close-modal" id="closeDisclaimerModal">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="disclaimerDisplayContent">
+                    <!-- Disclaimer content will be injected here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced Lightbox -->
+    <div id="lightbox" class="lightbox hidden">
+        <div class="lightbox-overlay"></div>
+        <button class="lightbox-close" id="closeLightbox">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+        <button class="lightbox-nav lightbox-prev" id="prevPainting">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="lightbox-nav lightbox-next" id="nextPainting">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+        <div class="lightbox-content">
+            <div class="lightbox-image-wrapper">
+                <img id="lightboxImage" src="" alt="" class="lightbox-image">
+            </div>
+            <div class="lightbox-info">
+                <h2 id="lightboxTitle" class="lightbox-title"></h2>
+                <div class="lightbox-details">
+                    <p><strong>Year:</strong> <span id="lightboxYear"></span></p>
+                    <p><strong>Medium:</strong> <span id="lightboxMedium"></span></p>
+                    <p><strong>Size:</strong> <span id="lightboxSize"></span></p>
+                    <p id="lightboxDescription" class="lightbox-description"></p>
+                    <div id="lightboxTags" class="lightbox-tags"></div>
+                </div>
+                <div id="lightboxAdminActions" class="lightbox-admin-actions hidden">
+                    <button id="editPaintingBtn" class="btn btn-primary">Edit</button>
+                    <button id="deletePaintingBtn" class="btn btn-danger">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Indicator -->
+    <div id="loadingIndicator" class="loading-indicator">
+        <div class="loader"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
