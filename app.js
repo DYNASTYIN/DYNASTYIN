@@ -6,7 +6,7 @@
 const CONFIG = {
     ADMIN_PASSPHRASE: 'DynastyIN2000',
     DB_NAME: 'DynastyInDB',
-    DB_VERSION: 4, // Incremented for new features
+    DB_VERSION: 4,
     STORE_NAME: 'paintings',
     BACKGROUND_STORE: 'backgrounds',
     BLOG_STORE: 'blogPosts',
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         // Setup event listeners
         setupEventListeners();
         
-        // Setup secret admin access
+        // Setup secret admin access - FIXED
         setupSecretAdminAccess();
         
         console.log('✅ DynastyIN ready!');
@@ -1260,18 +1260,21 @@ function updateAdminUI() {
     }
 }
 
-// === Secret Admin Access - UPDATED COMBINATION ===
+// === Secret Admin Access - FIXED VERSION ===
 function setupSecretAdminAccess() {
-    let keysPressed = {};
-    let combination = ['Control', 'Shift', 'Alt', 'Z']; // New combination
+    let pressedKeys = new Set();
     
     document.addEventListener('keydown', (e) => {
-        keysPressed[e.key] = true;
+        // Add the pressed key to our set
+        pressedKeys.add(e.key.toLowerCase());
         
-        // Check for Ctrl+Shift+Alt+Z (new combination)
-        const combinationPressed = combination.every(key => keysPressed[key]);
+        // Check for Ctrl+Shift+Alt+Z combination
+        const hasCtrl = pressedKeys.has('control');
+        const hasShift = pressedKeys.has('shift');
+        const hasAlt = pressedKeys.has('alt');
+        const hasZ = pressedKeys.has('z');
         
-        if (combinationPressed) {
+        if (hasCtrl && hasShift && hasAlt && hasZ) {
             e.preventDefault();
             const adminToggle = document.getElementById('adminToggle');
             if (adminToggle && adminToggle.style.display === 'none') {
@@ -1281,18 +1284,23 @@ function setupSecretAdminAccess() {
                 // Show a subtle notification
                 showTemporaryNotification('Admin access revealed!', 'success');
             }
-            // Reset keys
-            keysPressed = {};
+            // Clear the keys after successful combination
+            pressedKeys.clear();
         }
         
-        // Limit the size of keysPressed to prevent memory issues
-        if (Object.keys(keysPressed).length > 10) {
-            keysPressed = {};
+        // Limit the size to prevent memory issues
+        if (pressedKeys.size > 10) {
+            pressedKeys.clear();
         }
     });
     
     document.addEventListener('keyup', (e) => {
-        delete keysPressed[e.key];
+        pressedKeys.delete(e.key.toLowerCase());
+    });
+    
+    // Also clear keys if window loses focus
+    window.addEventListener('blur', () => {
+        pressedKeys.clear();
     });
 }
 
@@ -1364,7 +1372,8 @@ function renderGallery() {
             <div class="gallery-item" data-index="${index}">
                 <img src="${imageUrl}" 
                      alt="${painting.title}" 
-                     class="gallery-item-image">
+                     class="gallery-item-image"
+                     loading="lazy">
                 <div class="gallery-item-overlay">
                     <div class="gallery-item-info">
                         <h3>${painting.title}</h3>
@@ -1414,7 +1423,7 @@ async function loadBackgroundsList() {
             
             return `
                 <div class="background-item" data-id="${background.id}">
-                    <img src="${imageUrl}" alt="${background.name}" class="background-item-image">
+                    <img src="${imageUrl}" alt="${background.name}" class="background-item-image" loading="lazy">
                     <div class="background-item-info">
                         <p><strong>${background.name}</strong></p>
                         <p class="text-muted">${new Date(background.createdAt).toLocaleDateString()}</p>
